@@ -1,6 +1,5 @@
 # 📸 Projeto Câmera – Versões 1.0 e 2.0
 
-Este repositório contém dois protótipos de aplicação relacionados a captura e/ou manipulação de **imagens e vídeo**.  
 O objetivo é estudar a evolução do projeto em duas etapas: **versão 1.0** (base inicial) e **versão 2.0** (refinamentos e melhorias).
 
 ---
