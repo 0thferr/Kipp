@@ -1,93 +1,22 @@
-# Documentação do Componente de Stream de Câmera
+# Kipp — Versão 2.0
 
-## Visão Geral
-O componente CameraPlayer é uma implementação de um player de vídeo para streams HLS (HTTP Live Streaming) usando Vue.js e a biblioteca hls.js. Este componente foi projetado para ser reutilizável e fácil de integrar em qualquer aplicação Vue.js que necessite reproduzir streams de câmera.
+A grade em `/` lista as câmeras configuradas. O link **Abrir câmera** abre a página individual em `/camera/:id`. O player usa hls.js ou, em navegadores compatíveis, a reprodução HLS nativa.
 
-## Dependências
-- Vue.js 3.x
-- hls.js: ^1.4.0 ou superior
+## Executar
 
-## Instalação
-1. Primeiro, instale a dependência hls.js:
 ```bash
-npm install hls.js
+npm ci
+npm run dev
 ```
 
-2. Copie o arquivo `CameraPlayer.vue` para seu projeto (sugestão: coloque em `src/components/CameraPlayer.vue`)
+Acesse o endereço exibido pelo Vite. Para usar outra transmissão na sua máquina, defina `VITE_HLS_STREAM_URL` em `.env.local` e reinicie o servidor. Use uma URL HLS acessível ao navegador. Variáveis com prefixo `VITE_` ficam disponíveis no código entregue ao navegador.
 
-## Uso
-Para usar o componente em suas páginas:
+## Validar
 
-1. Importe o componente:
-```javascript
-import CameraPlayer from '@/components/CameraPlayer.vue'
+```bash
+npm run lint
+npm run test:unit
+npm run build
 ```
 
-2. Registre o componente:
-```javascript
-export default {
-  components: {
-    CameraPlayer
-  }
-}
-```
-
-3. Use o componente no template:
-```html
-<CameraPlayer 
-  :stream-url="sua_url_de_stream"
-/>
-```
-
-## Recursos
-- Reprodução automática do stream
-- Suporte a HLS nativo para Safari
-- Tratamento de erros e reconexão automática
-- Interface responsiva
-- Controles de vídeo nativos
-
-## Tratamento de Erros
-O componente inclui tratamento para os seguintes tipos de erro:
-- Erros de rede: tenta reconectar automaticamente
-- Erros de mídia: tenta recuperar automaticamente
-- Erros fatais: destroi o player e loga o erro
-
-## Exemplos
-
-### Uso básico:
-```vue
-<template>
-  <CameraPlayer 
-    stream-url="https://seu-stream-url.m3u8"
-  />
-</template>
-```
-
-### Uso em grid de câmeras:
-```vue
-<template>
-  <div class="camera-grid">
-    <CameraPlayer 
-      v-for="camera in cameras"
-      :key="camera.id"
-      :stream-url="camera.url"
-    />
-  </div>
-</template>
-```
-
-## Considerações de Performance
-- O componente utiliza `beforeUnmount` para limpar recursos quando removido
-- Implementa lazy loading para o stream
-- Utiliza worker threads quando disponível
-
-## Troubleshooting
-1. Stream não inicia:
-   - Verifique se a URL do stream está acessível
-   - Verifique se o formato do stream é HLS (.m3u8)
-   - Verifique os logs do console para erros específicos
-
-2. Problemas de performance:
-   - Considere reduzir a qualidade do stream
-   - Verifique a conexão de rede
-   - Monitore o uso de memória do navegador
+Para os testes de navegação, deixe o servidor Vite rodando em `http://127.0.0.1:5173` e execute `npm run test:e2e` em outro terminal. O Cypress intercepta as solicitações de playlists HLS durante os testes. Se o executável do Cypress ainda não estiver instalado, execute `npm exec cypress install`.

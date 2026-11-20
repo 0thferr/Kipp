@@ -1,5 +1,4 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
 import { useHlsPlayer } from '@/composables/useHlsPlayer'
 
 const props = defineProps({
@@ -9,27 +8,18 @@ const props = defineProps({
   }
 })
 
-const videoRef = ref(null)
-const { initPlayer, destroyPlayer } = useHlsPlayer()
-
-onMounted(() => {
-  if (videoRef.value) {
-    initPlayer(videoRef.value, props.streamUrl)
-  }
-})
-
-onUnmounted(() => {
-  destroyPlayer()
-})
+const { videoRef, isLoading, error } = useHlsPlayer(() => props.streamUrl)
 </script>
 
 <template>
   <div class="camera-player">
-    <video ref="videoRef" controls autoplay></video>
+    <video ref="videoRef" controls autoplay muted playsinline></video>
+    <p v-if="error" role="alert">{{ error }}</p>
+    <p v-else-if="isLoading" role="status">Carregando transmissão…</p>
   </div>
 </template>
 
-<style>
+<style scoped>
 .camera-player {
   width: 100%;
   height: 100%;
@@ -40,5 +30,11 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.camera-player p {
+  margin: 0;
+  padding: 0.5rem;
+  color: #1a1a1a;
 }
 </style>
