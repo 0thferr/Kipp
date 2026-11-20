@@ -1,39 +1,22 @@
 <template>
   <DefaultLayout>
-    <div class="single-camera">
+    <RouterLink :to="{ name: 'cameras' }">Voltar às câmeras</RouterLink>
+    <div v-if="camera" class="single-camera">
+      <h2>{{ camera.name }}</h2>
       <CameraPlayer :stream-url="camera.streamUrl" />
-      <CameraControls
-        @fullscreen="toggleFullscreen"
-        @snapshot="takeSnapshot"
-      />
     </div>
+    <p v-else role="status">Câmera não encontrada.</p>
   </DefaultLayout>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import CameraPlayer from '@/components/camera/CameraPlayer.vue'
-import CameraControls from '@/components/camera/CameraControls.vue'
 
-export default {
-  name: 'SingleCameraPage',
-  components: {
-    DefaultLayout,
-    CameraPlayer,
-    CameraControls
-  },
-  setup() {
-    const store = useStore()
-    const route = useRoute()
-    const camera = computed(() => 
-      store.state.cameras.list.find(c => c.id === route.params.id)
-    )
-
-    return {
-      camera
-    }
-  }
-}
+const store = useStore()
+const route = useRoute()
+const camera = computed(() => store.getters['cameras/getCameraById'](route.params.id))
 </script>

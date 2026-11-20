@@ -12,7 +12,7 @@ export default {
 
   getters: {
     getCameraById: (state) => (id) => {
-      return state.list.find(camera => camera.id === id);
+      return state.list.find(camera => String(camera.id) === String(id));
     }
   },
 
